@@ -15,7 +15,7 @@ con=psycopg2.connect(
     host='localhost',
     database="news",
     user='postgres',
-    password='Redbox19!',
+    password='azerty',
 )
 
 #cursor
