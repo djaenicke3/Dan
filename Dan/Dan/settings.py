@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'first_page',
+    'django_cron',
 ]
 
 MIDDLEWARE = [
@@ -74,13 +75,23 @@ WSGI_APPLICATION = 'Dan.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'news.db'),
+#     }
+#     }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'news.db'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'News',
+        'USER':'postgres',
+        'PASSWORD':'admin',
+        'HOST':'localhost',
+        'PORT':'5432',
     }
     }
-
 
 
 # Password validation
@@ -124,3 +135,4 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'statics'),
 ]
+
