@@ -2,9 +2,6 @@
 import feedparser
 from bs4 import BeautifulSoup
 import requests
-from flask import Flask, render_template
-from flask_sqlalchemy import SQLAlchemy
-import sqlite3
 from datetime import datetime
 
 startTime = datetime.now()
