@@ -96,7 +96,12 @@ for urls in rssurls:
                     c = date - date.utcoffset()
                     date=c.strftime("%Y-%m-%d %n %H:%M:%S")
                 except:
-                    print('new prob')
+
+                    with open("/home/khalil/failures.txt", "a") as file_object:
+
+                        # Append 'hello' at the end of file
+                        file_object.write("\n")
+                        file_object.write(f"New problem with time format : {post.published}")
 
 
 
