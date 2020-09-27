@@ -1,2 +1,81 @@
-159.89.40.11
-mohamed@danieljaenicke.com
+**** deploy django app ****
+*link : https://www.digitalocean.com/community/tutorials/how-to-set-up-django-with-postgres-nginx-and-gunicorn-on-ubuntu-18-04*
+
+* install all packages needed on the server
+
+
+* creating database (postgres/sqlite3) and then feed it with data if wanted
+
+* virtualenv
+
+* clone git repository with changing settings.py :
+	
+	allowed hosts
+	Static_root
+
+* manage.py collectstatic
+
+test the ubunto server:
+
+sudo ufw allow 8000
+manage.py runserver 0.0.0.0:8000
+
+
+deactivate (exit virtualenv)
+
+(*recommended*):
+Setting the gunicorn socket file :
+
+sudo nano /etc/systemd/system/gunicorn.socket
+
+
+sudo nano /etc/systemd/system/gunicorn.service (with making all needed changes):
+
+/etc/systemd/system/gunicorn.service
+[Unit]
+Description=gunicorn daemon
+Requires=gunicorn.socket
+After=network.target
+
+[Service]
+User=sammy
+Group=www-data
+WorkingDirectory=/home/sammy/myprojectdir
+ExecStart=/home/sammy/myprojectdir/myprojectenv/bin/gunicorn \
+          --access-logfile - \
+          --workers 3 \
+          --bind unix:/run/gunicorn.sock \
+          myproject.wsgi:application
+
+[Install]
+WantedBy=multi-user.target
+
+testing gunicorn.service:
+	sudo systemctl start gunicorn.socket
+	sudo systemctl enable gunicorn.socket
+	sudo systemctl status gunicorn.socket
+
+
+sudo nano /etc/nginx/sites-available/myproject
+
+server {
+    listen 80;
+    server_name server_domain_or_IP;
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location /static/ {
+        root /home/sammy/myprojectdir;
+    }
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/run/gunicorn.sock;
+    }
+}
+
+
+sudo ln -s /etc/nginx/sites-available/myproject /etc/nginx/sites-enabled
+
+sudo ufw delete allow 8000
+sudo ufw allow 'Nginx Full'
+

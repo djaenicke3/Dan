@@ -2,6 +2,7 @@
 import feedparser
 from bs4 import BeautifulSoup
 import requests
+
 from datetime import datetime
 
 startTime = datetime.now()
@@ -15,7 +16,7 @@ con=psycopg2.connect(
     host='localhost',
     database="news",
     user='postgres',
-    password='azerty',
+    password='admin',
 )
 
 #cursor
@@ -28,7 +29,8 @@ rows=cur.fetchall()
 
 current_links_list=[r[0] for r in rows]
 rss_dict = {}
-rssurls = ['https://www.theguardian.com/uk/rss',
+rssurls = [
+    'https://www.theguardian.com/uk/rss',
            'https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml',
            'https://fivethirtyeight.com/all/feed',
            'http://feeds.feedburner.com/TechCrunch/',
@@ -47,9 +49,9 @@ for urls in rssurls:
     for post in d.entries:
         url = post.link
         if url in current_links_list:
-            #print(f"{url} already exists")
+            print(f"{url} already exists")
             continue
-        #print(f"{url} new article")
+        print(f"{url} new article")
 
 
 
@@ -58,21 +60,48 @@ for urls in rssurls:
         soup = BeautifulSoup(r_html, 'html5lib')
         article = soup.find_all('p')
         article_text = ' '.join([url.text for url in article])
+        print(post.published)
 
         if post.published[0].isalpha():
             try:
-                date=datetime.strptime(post.published,'%a, %d %b %Y %H:%M:%S %Z').strftime("%Y-%m-%d %n %H:%M:%S")
+                #***** for scmp articles with 8hours in advance***
+                #get a dattime object so we can use datetime attributes
+                date=datetime.strptime(post.published,'%a, %d %b %Y %H:%M:%S %z')
+
+                #.utcoffset() returns the timedelta which means the delay and since both are datetime objects we can substract them to get the utc time
+                c=date-date.utcoffset()
+
+
+                #reconvert the datetime object to the wished format string to be added in the db
+                date=c.strftime("%Y-%m-%d %n %H:%M:%S")
             except Exception as e:
                 try:
-                    date=datetime.strptime(post.published[:-6],'%a, %d %b %Y %H:%M:%S').strftime("%Y-%m-%d %n %H:%M:%S")
+                    date=datetime.strptime(post.published,'%a, %d %b %Y %H:%M:%S %Z').strftime("%Y-%m-%d %n %H:%M:%S")
                 except:
+                    print('New problem , must standarize the time')
                     pass
 
 
-            #print(f"converted from {post.published} to {date}")
 
         else:
-            date=post.published
+            date = post.published
+            try:
+                a=datetime.strptime(date,"%Y-%m-%d %n %H:%M:%S")
+                print('jawha behi')
+            except:
+                a=date
+                a = a[0:10] + ' ' + a[11:19] + ' ' + a[19:22] + a[23:]
+                try:
+                    date = datetime.strptime(a, "%Y-%m-%d %H:%M:%S %Z")
+                    c = date - date.utcoffset()
+                    date=c.strftime("%Y-%m-%d %n %H:%M:%S")
+                except:
+                    print('new prob')
+
+
+
+
+
 
         rss_dict.update(
                 {post.link:
@@ -98,7 +127,7 @@ for post in d:
 
 
 
-with open("sample.txt", "a") as file_object:
+with open("/home/dan/new_scraping_results.txt", "a") as file_object:
 
     # Append 'hello' at the end of file
     file_object.write("\n")
