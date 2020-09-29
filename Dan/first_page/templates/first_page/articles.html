@@ -150,12 +150,12 @@ News
   <ul class="pagination justify-content-center">
 
 
-      <li class="page-item"><a class="page-link" href="?url={{url}}&key={{key}}&page=1">First</a>
+      <li class="page-item"><a class="page-link" href="?url={{url}}&title_contains={{title_contains}}&date_min={{date_min}}&date_max={{date_max}}&page=1">First</a>
             </li>
 
 
   {% if rows.has_previous %}
-  		<li class="page-item"><a class="page-link" href="?url={{url}}&key={{key}}&page={{rows.previous_page_number }}">Previous</a>
+  		<li class="page-item"><a class="page-link" href="?url={{url}}&title_contains={{title_contains}}&date_min={{date_min}}&date_max={{date_max}}&page={{rows.previous_page_number }}">Previous</a>
   		</li>
   			{%else%}
   			<li class="page-item disabled">
@@ -165,7 +165,7 @@ News
 
         {% endif %}
             {% if rows.number|add:'-5' > 1 %}
-    <li class="page-item"><a class="page-link" href="?url={{url}}&key={{key}}&page={{rows.number|add:'-5' }}">&hellip;</a></li>
+    <li class="page-item"><a class="page-link" href="?url={{url}}&title_contains={{title_contains}}&date_min={{date_min}}&date_max={{date_max}}&page={{rows.number|add:'-5' }}">&hellip;</a></li>
 
 {% endif %}
 
@@ -174,20 +174,20 @@ News
             {% if page == rows.number %}
 
               <li class="page-item active">
-                  <a  class="page-link" href="?url={{url}}&key={{key}}&page={{page}}">{{page}}</a>
+                  <a  class="page-link" href="?url={{url}}&title_contains={{title_contains}}&date_min={{date_min}}&date_max={{date_max}}&page={{page}}">{{page}}</a>
               </li>
 
                 {% elif page > rows.number|add:'-6' and page < rows.number|add:'6' %}
-<li class="page-item"><a class="page-link" href="?url={{url}}&key={{key}}&page={{page }}">{{page}}</a>
+<li class="page-item"><a class="page-link" href="?url={{url}}&title_contains={{title_contains}}&date_min={{date_min}}&date_max={{date_max}}&page={{page }}">{{page}}</a>
               </li>    {% endif %}
 
 
               {%endfor%}
               {% if paginator.num_pages > rows.number|add:'4' %}
-    <li class="page-item"><a class="page-link" href="?url={{url}}&key={{key}}&page={{ rows.number|add:'5' }}">&hellip;</a></li>
+    <li class="page-item"><a class="page-link" href="?url={{url}}&title_contains={{title_contains}}&date_min={{date_min}}&date_max={{date_max}}&page={{ rows.number|add:'5' }}">&hellip;</a></li>
 {% endif %}
               {% if rows.has_next %}
-              <li class="page-item"><a class="page-link" href="?url={{url}}&key={{key}}&page={{rows.next_page_number }}">Next</a>
+              <li class="page-item"><a class="page-link" href="?url={{url}}&title_contains={{title_contains}}&date_min={{date_min}}&date_max={{date_max}}&page={{rows.next_page_number }}">Next</a>
               </li>
   			{%else%}
   			<li class="page-item disabled">
@@ -195,7 +195,7 @@ News
     </li>
         {% endif %}
 
-            <li class="page-item"><a class="page-link" href="?url={{url}}&key={{key}}&page={{paginator.num_pages }}">Last</a>
+            <li class="page-item"><a class="page-link" href="?url={{url}}&title_contains={{title_contains}}&date_min={{date_min}}&date_max={{date_max}}&page={{paginator.num_pages }}">Last</a>
             </li>
 
   </ul>
