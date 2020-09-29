@@ -52,3 +52,11 @@ def home(request):
                                                         'categories': categories,
                                                         'title_contains': title_contains, 'date_min': date_min,
                                                         'date_max': date_max, 'title_or_author': title_or_author})
+
+
+def about(request):
+    num=request.session.get('num',0)+1
+    request.session['num']=num
+    if num>4:
+        del(request.session['num'])
+    return HttpResponse(f'view count ={num}')
