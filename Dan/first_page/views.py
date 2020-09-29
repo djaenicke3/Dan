@@ -29,7 +29,6 @@ def home(request):
     else:
 
         if title_contains == '':
-
             rows = NewsList.objects.filter(base_url=selected_url)
         else:
             rows = NewsList.objects.filter(base_url=selected_url, headline__icontains=title_contains)
@@ -54,4 +53,3 @@ def home(request):
                                                         'categories': categories,
                                                         'title_contains': title_contains, 'date_min': date_min,
                                                         'date_max': date_max, 'title_or_author': title_or_author})
-
