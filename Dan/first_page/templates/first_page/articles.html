@@ -14,16 +14,91 @@ News
 <div class="container text-center">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+
 
 <link rel="stylesheet" href="{%static 'css/home.css'%}">
-<div class="form-group">
-	
+      <div class="form-group">
 
-</div>
-<form action="/" method="get">
-    {{ form.as_ul }}
-    <input type="submit" value="Submit">
-</form>
+
+      </div>
+<form action="." method="get">
+  <form method="GET" action=".">
+        <div class="form-row">
+            <div class="form-group col-12">
+                <div class="input-group">
+                    {% if title_contains %}
+                    <input class="form-control py-2 border-right-0 border" type="search" name="title_contains" value={{title_contains}} />
+
+
+                    {% else%}
+                    <input class="form-control py-2 border-right-0 border" type="search" name="title_contains" placeholder="Headline contains..." />
+                   {%endif%}
+                    <span class="input-group-append">
+                        <div class="input-group-text bg-transparent">
+                            <i class="fa fa-search"></i>
+                        </div>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-12">
+                <div class="input-group">
+                    {%if title_or_author%}
+                    <input class="form-control py-2 border-right-0 border" type="search" name="title_or_author" value={{title_or_author}} />
+
+                    {%else%}
+                    <input class="form-control py-2 border-right-0 border" type="search" name="title_or_author" placeholder="Author..." />
+                    {%endif%}
+                    <span class="input-group-append">
+                        <div class="input-group-text bg-transparent">
+                            <i class="fa fa-search"></i>
+                        </div>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+
+          <div class="form-group col-md-2 col-lg-2">
+
+            <label for="publishDateMin">Publish date minimum</label>
+            {% if date_min%}
+            <input type="date" class="form-control" id="publishDateMin" name="date_min" value="{{date_min}}">
+            {%else%}
+            <input type="date" class="form-control" id="publishDateMin" name="date_min" >
+            {%endif%}
+          </div>
+          <div class="form-group col-md-2 col-lg-2">
+            <label for="publishDateMax">Publish date maximum</label>
+            {%if date_max%}
+            <input type="date" class="form-control" id="publishDateMax" name="date_max" value={{date_max}}>
+
+            {%else%}
+            <input type="date" class="form-control" id="publishDateMax" name="date_max">
+            {%endif%}
+          </div>
+          <div class="form-group col-md-4">
+            <label for="category">Category</label>
+            <select id="category" class="form-control" name="url">
+                <option  value="" >--- All urls ---</option>
+
+                {%if url%}
+              <option  selected >{{url}}</option>
+              {%endif%}
+
+              {% for cat in categories %}
+              <option value="{{ cat }}">{{ cat }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Search</button>
+      </form>
+
 <div class="row">
         <div class="panel panel-primary filterable">
             <div class="panel-heading">
@@ -58,22 +133,25 @@ News
             <tr>
                <td>{{ row.base_url }}</td>
                <td> {{ row.headline}}</td>
-               <td><a href='{{ row.article_link }}'  target="_blank">Go to article</a> </a></td>	
+               <td><a href='{{ row.article_link }}  target="_blank"'>Go to article</a> </a></td>
                <td>{{ row.author }}</td>
                <td>{{ row.published_date }}</td>
 
             </tr>
             {% endfor %}
-         
+
 
                 </tbody>
             </table>
         </div>
     </div>
-   
+
   <nav aria-label="Page navigation example">
   <ul class="pagination justify-content-center">
 
+
+      <li class="page-item"><a class="page-link" href="?url={{url}}&key={{key}}&page=1">First</a>
+            </li>
 
 
   {% if rows.has_previous %}
@@ -98,11 +176,11 @@ News
               <li class="page-item active">
                   <a  class="page-link" href="?url={{url}}&key={{key}}&page={{page}}">{{page}}</a>
               </li>
-               
+
                 {% elif page > rows.number|add:'-6' and page < rows.number|add:'6' %}
 <li class="page-item"><a class="page-link" href="?url={{url}}&key={{key}}&page={{page }}">{{page}}</a>
               </li>    {% endif %}
- 
+
 
               {%endfor%}
               {% if paginator.num_pages > rows.number|add:'4' %}
@@ -116,6 +194,10 @@ News
       <a class="page-link" href="#" tabindex="-1">Next</a>
     </li>
         {% endif %}
+
+            <li class="page-item"><a class="page-link" href="?url={{url}}&key={{key}}&page={{paginator.num_pages }}">Last</a>
+            </li>
+
   </ul>
 </nav>
 
