@@ -19,13 +19,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
+# SECURITY WARNING: keep the secret key used in production secret!git
 SECRET_KEY = '1dn5-7kntv8#p%yrs$9@adb2u0%uv9#g#*v#o98&wcaijn*r34'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['danieljaenicke.com','159.89.40.11']
+
+ALLOWED_HOSTS = ['danieljaenicke.com','167.99.226.189']
 
 
 # Application definition
@@ -38,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'first_page',
-    'django_cron',
 ]
 
 MIDDLEWARE = [
@@ -85,9 +85,9 @@ WSGI_APPLICATION = 'Dan.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'news',
+        'NAME': 'News',
         'USER':'postgres',
-        'PASSWORD':'azerty',
+        'PASSWORD':'admin',
         'HOST':'localhost',
         'PORT':'5432',
     }
@@ -130,7 +130,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+STATIC_ROOT =os.path.join(PROJECT_ROOT,'static')
 
-
+STATICFILES_FINDERS = (
+    #'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',    #causes verbose duplicate notifications in django 1.9
+)
