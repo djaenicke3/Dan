@@ -27,7 +27,6 @@ def home(request):
             rows = NewsList.objects.filter(headline__icontains=title_contains)
 
     else:
-
         if title_contains == '':
             rows = NewsList.objects.filter(base_url=selected_url)
         else:
