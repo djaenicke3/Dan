@@ -132,7 +132,7 @@ for post in d:
 
 
 
-with open("/home/khalil/scraping_results.txt", "a") as file_object:
+with open("/home/dan/scraping_results.txt", "a") as file_object:
 
     # Append 'hello' at the end of file
     file_object.write("\n")
