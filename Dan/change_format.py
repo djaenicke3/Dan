@@ -21,12 +21,11 @@ current_links_list = [r for r in rows]
 for r in current_links_list:
     sql_update_query = """Update news_list set summary = %s where id = %s"""
     article_text = r[1]
+    summary=''
     try:
         summary_text = summarize(article_text, ratio=0.04, word_count=100)
-    except Exception as e:
-        print(f"{e } and the article text={article_text[:10]}")
-        summary_text='Cannot summarize article , Click on article link'
-    if summary_text== '':
+    except :
+
         try:
             summary = summarize(article_text, word_count=100)
         except:
@@ -34,7 +33,8 @@ for r in current_links_list:
             try:
                 summary = summarize(article_text[n + 1:])
             except Exception as e:
-                print(e)
+                print(f"{e} and the article text={article_text[:10]}")
+
 
     if summary=='':
         summary_text='Cannot summarize article , Click on article link'
