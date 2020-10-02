@@ -35,7 +35,7 @@ def timeline(request):
     context = {'rows': page_obj, 'date_min': date_min, 'date_max': date_max, 'total_number': total_number,
                'selected_url': selected_url}
 
-    return render(request, 'first_page/articles.html', context)
+    return render(request, 'first_page/timeline.html', context)
 
 
 
