@@ -27,6 +27,16 @@ for r in current_links_list:
         print(f"{e } and the article text={article_text[:10]}")
         summary_text='Cannot summarize article , Click on article link'
     if summary_text== '':
+        try:
+            summary = summarize(article_text, word_count=100)
+        except:
+            n = article_text.find('.')
+            try:
+                summary = summarize(article_text[n + 1:])
+            except Exception as e:
+                print(e)
+
+    if summary=='':
         summary_text='Cannot summarize article , Click on article link'
     cur.execute(sql_update_query, (summary_text, r[0]))
     con.commit()

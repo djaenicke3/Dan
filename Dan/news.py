@@ -62,7 +62,15 @@ for urls in rssurls:
         soup = BeautifulSoup(r_html, 'html5lib')
         article = soup.find_all('p')
         article_text = ' '.join([url.text for url in article])
-        summary=summarize(article_text,ratio=0.04,word_count=100)
+        try:
+
+            summary=summarize(article_text,ratio=0.04,word_count=100)
+        except:
+            try:
+                summary=summarize(article_text,word_count=100)
+            except:
+                n=article_text.find('.')
+                summary=summarize(article_text[n+1:])
 
 
         if post.published[0].isalpha():
