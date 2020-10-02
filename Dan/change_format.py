@@ -13,7 +13,7 @@ con = psycopg2.connect(
 )
 # cursor
 cur = con.cursor()
-cur.execute(f"SELECT id,article_text from news_list limit 25000")
+cur.execute(f"SELECT id,article_text from news_list limit 35000")
 rows = cur.fetchall()
 print(len(rows))
 
