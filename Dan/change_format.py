@@ -13,7 +13,7 @@ con = psycopg2.connect(
 )
 # cursor
 cur = con.cursor()
-cur.execute(f"SELECT id,article_text from news_list where summary ='' ")
+cur.execute(f"SELECT id,article_text from news_list")
 rows = cur.fetchall()
 print(len(rows))
 current_links_list = [r for r in rows]
