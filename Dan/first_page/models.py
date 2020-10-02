@@ -16,6 +16,10 @@ class NewsList(models.Model):
     author = models.TextField(blank=True, null=True)
     published_date = models.TextField(blank=True, null=True)
     article_text = models.TextField(blank=True, null=True)
+    summary=models.TextField(blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'news_list'
+
+    def __str__(self):
+        return self.headline
