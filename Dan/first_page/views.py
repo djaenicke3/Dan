@@ -87,6 +87,8 @@ def home(request):
     categories = NewsList.objects.values_list('base_url', flat=True).distinct()
     categories = list(categories)
     page_obj = paginator.get_page(page_num)
+    total_number=NewsList.objects.all().count()
+
 
     return render(request, 'first_page/articles.html',
                   {'rows': page_obj, 'paginator': paginator, 'page_num': page_num, 'total_number': total_number,
