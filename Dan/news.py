@@ -2,6 +2,8 @@
 import feedparser
 from bs4 import BeautifulSoup
 import requests
+from gensim.summarization import summarize
+
 
 from datetime import datetime
 
@@ -60,7 +62,8 @@ for urls in rssurls:
         soup = BeautifulSoup(r_html, 'html5lib')
         article = soup.find_all('p')
         article_text = ' '.join([url.text for url in article])
-        print(post.published)
+        summary=summarize(article_text,ratio=0.04)
+
 
         if post.published[0].isalpha():
             try:
@@ -92,16 +95,11 @@ for urls in rssurls:
                 a=date
                 a = a[0:10] + ' ' + a[11:19] + ' ' + a[19:22] + a[23:]
                 try:
-                    date = datetime.strptime(a, "%Y-%m-%d %H:%M:%S %z")
+                    date = datetime.strptime(a, "%Y-%m-%d %H:%M:%S %Z")
                     c = date - date.utcoffset()
                     date=c.strftime("%Y-%m-%d %n %H:%M:%S")
                 except:
-
-                    with open("/home/khalil/failures.txt", "a") as file_object:
-
-                        # Append 'hello' at the end of file
-                        file_object.write("\n")
-                        file_object.write(f"New problem with time format : {post.published}")
+                    print('new prob')
 
 
 
@@ -116,6 +114,7 @@ for urls in rssurls:
                 'author': post.get('author','Author not found'),
                 'published_date':date,
                 'article_text': article_text
+                 'summary':summary
             }})
 
 
@@ -124,7 +123,7 @@ for urls in rssurls:
 d = list(rss_dict.values())
 
 for post in d:
-    cur.execute("insert into news_list (base_url,headline,article_link,author,published_date,article_text) values (%s,%s,%s,%s,%s,%s)",(post.get('base_url'),post.get('headline'),post.get('article_link'),post.get('author'),post.get('published_date'),post.get('article_text')))
+    cur.execute("insert into news_list (base_url,headline,article_link,author,published_date,article_text,summary) values (%s,%s,%s,%s,%s,%s,%s)",(post.get('base_url'),post.get('headline'),post.get('article_link'),post.get('author'),post.get('published_date'),post.get('article_text'),post.get('summary')))
     con.commit()
     count+=1
 
@@ -132,7 +131,7 @@ for post in d:
 
 
 
-with open("/home/dan/scraping_results.txt", "a") as file_object:
+with open("/home/dan/new_scraping_results.txt", "a") as file_object:
 
     # Append 'hello' at the end of file
     file_object.write("\n")
