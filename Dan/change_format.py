@@ -16,7 +16,8 @@ cur = con.cursor()
 cur.execute(f"SELECT id,article_text from news_list where summary ='' limit 10 ")
 rows = cur.fetchall()
 print(len(rows))
-print(rows[0][1])
+print()
+print(rows[1][1])
 current_links_list = [r for r in rows]
 for r in current_links_list:
     sql_update_query = """Update news_list set summary = %s where id = %s"""
