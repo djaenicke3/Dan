@@ -36,7 +36,7 @@ def timeline(request):
     page_obj = paginator.get_page(page_num)
 
     context = {'rows': page_obj, 'date_min': date_min, 'date_max': date_max, 'total_number': total_number,
-               'selected_url': selected_url, 'categories': categories, 'url': selected_url}
+               'selected_url': selected_url, 'categories': categories, 'url': selected_url, 'paginator': paginator}
 
     return render(request, 'first_page/timeline.html', context)
 
