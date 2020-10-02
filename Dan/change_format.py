@@ -7,7 +7,7 @@ from gensim.summarization import summarize
 
 con = psycopg2.connect(
     host='localhost',
-    database="News",
+    database="news",
     user='postgres',
     password='admin',
 )
