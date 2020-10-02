@@ -20,10 +20,6 @@ from first_page import views
 urlpatterns = [
     path('openadmin!/', admin.site.urls),
     path('',views.home,name='home'),
-	path('about/',views.about,name='about'),
     path('timeline/',views.timeline,name='timeline'),
-
-
-
 
 ]
