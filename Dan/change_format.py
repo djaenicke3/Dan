@@ -23,7 +23,7 @@ for r in current_links_list:
     article_text = r[1]
     summary=''
     try:
-        summary_text = summarize(article_text, ratio=0.04, word_count=100)
+        summary = summarize(article_text, ratio=0.04, word_count=100)
     except :
 
         try:
@@ -37,8 +37,8 @@ for r in current_links_list:
 
 
     if summary=='':
-        summary_text='Cannot summarize article , Click on article link'
-    cur.execute(sql_update_query, (summary_text, r[0]))
+        summary=article_text
+    cur.execute(sql_update_query, (summary, r[0]))
     con.commit()
 
 # print(current_links_list)
