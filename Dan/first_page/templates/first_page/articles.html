@@ -22,6 +22,10 @@ News
 
 
       </div>
+
+    <div>
+        Total Articles :  <span> {{ total_number }}</span>
+    </div>
 <form action="." method="get">
   <form method="GET" action=".">
         <div class="form-row">
@@ -81,7 +85,7 @@ News
             {%endif%}
           </div>
           <div class="form-group col-md-4">
-            <label for="category">Source Url</label>
+            <label for="category">Category</label>
             <select id="category" class="form-control" name="url">
                 <option  value="" >--- All urls ---</option>
 
@@ -125,16 +129,19 @@ News
             <td>Link</td>
             <td>Author</td>
             <td>Date Published</td>
+            <td>Summary</td>
 
          </thead>
+
 
          {% for row in rows %}
             <tr>
                <td>{{ row.base_url }}</td>
                <td> {{ row.headline}}</td>
-               <td><a href='{{ row.article_link }}  ' target="_blank">Go to article</a> </a></td>
+               <td><a href='{{ row.article_link }}  'target="_blank">Go to article</a> </a></td>
                <td>{{ row.author }}</td>
                <td>{{ row.published_date }}</td>
+               <td>{{ row.summary }}</td>
 
             </tr>
             {% endfor %}

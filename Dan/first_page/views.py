@@ -3,10 +3,50 @@ from .models import NewsList
 from .forms import NameForm
 from django.db.models import Q
 from django.core.paginator import Paginator
+from django.db import connection
 
 
 def is_valid_queryparam(param):
     return param != '' and param is not None
+
+
+def timeline(request):
+    rows = NewsList.objects.all()
+    date_min = request.GET.get('date_min', '')
+    date_max = request.GET.get('date_max', '')
+    selected_url = request.GET.get("url", '')
+
+    total_number = NewsList.objects.all().count()
+
+    if is_valid_queryparam(date_min):
+        rows = rows.filter(published_date__gte=date_min)
+
+    if is_valid_queryparam(date_max):
+        rows = rows.filter(published_date__lt=date_max)
+
+    categories = NewsList.objects.values_list('base_url', flat=True).distinct()
+    categories = list(categories)
+
+    rows = rows.order_by('-published_date')
+
+    context = {'rows': rows, 'date_min': date_min, 'date_max': date_max, 'total_number': total_number,
+               'selected_url': selected_url}
+
+    return render(request, 'first_page/timeline.html', context)
+
+
+def signin(request):
+    if request.method == 'POST':
+        print(request.POST)
+        username = request.POST.get('name')
+        email = request.POST.get('email')
+        password = request.POST.get('pass')
+        user = User.objects.create_user(username, email, password)
+        user.save()
+
+        return redirect('login')
+    else:
+        return render(request, 'first_page/signin.html')
 
 
 # Create your views here.
@@ -27,18 +67,19 @@ def home(request):
             rows = NewsList.objects.filter(headline__icontains=title_contains)
 
     else:
+
         if title_contains == '':
+
             rows = NewsList.objects.filter(base_url=selected_url)
         else:
             rows = NewsList.objects.filter(base_url=selected_url, headline__icontains=title_contains)
 
     rows = rows.order_by('-published_date')
 
-    if is_valid_queryparam(date_min):
-        rows = rows.filter(published_date__gte=date_min)
+    cur = connection.cursor()
 
-    if is_valid_queryparam(date_max):
-        rows = rows.filter(published_date__lt=date_max)
+    # cur.execute("SELECT COUNT * from news_list")
+
     if is_valid_queryparam(title_or_author):
         rows = rows.filter(author__icontains=title_or_author)
     paginator = Paginator(rows, 25)  # Show 25 contacts per page.
@@ -47,16 +88,16 @@ def home(request):
     categories = list(categories)
     page_obj = paginator.get_page(page_num)
 
-    return render(request, 'first_page/articles.html', {'rows': page_obj, 'paginator': paginator, 'page_num': page_num,
-                                                        'url': selected_url, 'title_contains': title_contains,
-                                                        'categories': categories,
-                                                        'title_contains': title_contains, 'date_min': date_min,
-                                                        'date_max': date_max, 'title_or_author': title_or_author})
+    return render(request, 'first_page/articles.html',
+                  {'rows': page_obj, 'paginator': paginator, 'page_num': page_num, 'total_number': total_number,
+                   'url': selected_url, 'title_contains': title_contains, 'categories': categories,
+                   'title_contains': title_contains, 'date_min': date_min, 'date_max': date_max,
+                   'title_or_author': title_or_author})
 
 
 def about(request):
-    num=request.session.get('num',0)+1
-    request.session['num']=num
-    if num>4:
-        del(request.session['num'])
+    num = request.session.get('num', 0) + 1
+    request.session['num'] = num
+    if num > 4:
+        del (request.session['num'])
     return HttpResponse(f'view count ={num}')

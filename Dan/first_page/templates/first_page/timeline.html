@@ -1,10 +1,95 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
-</head>
+{% extends "first_page/base.html" %}
+
+
+{% block title %}Timeline{%endblock%}
+
+
+
+{% block content%}
+    {% load static %}
+    <link rel="stylesheet" href="{%static 'css/timeline.css'%}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <body>
-$END$
+
+    <div>
+        Total Articles :  <span> {{ total_number }}</span> 
+    </div>
+    <form action="." method="get">
+        <form method="GET" action=".">
+
+      
+                <div class="form-group col-md-2 col-lg-2">
+      
+                  <label for="publishDateMin">Publish date minimum</label>
+                  {% if date_min%}
+                  <input type="date" class="form-control" id="publishDateMin" name="date_min" value="{{date_min}}">
+                  {%else%}
+                  <input type="date" class="form-control" id="publishDateMin" name="date_min" >
+                  {%endif%}
+                </div>
+                <div class="form-group col-md-2 col-lg-2">
+                  <label for="publishDateMax">Publish date maximum</label>
+                  {%if date_max%}
+                  <input type="date" class="form-control" id="publishDateMax" name="date_max" value={{date_max}}>
+      
+                  {%else%}
+                  <input type="date" class="form-control" id="publishDateMax" name="date_max">
+                  {%endif%}
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="category">Category</label>
+                  <select id="category" class="form-control" name="url">
+                      <option  value="" >--- All urls ---</option>
+      
+                      {%if url%}
+                    <option  selected >{{url}}</option>
+                    {%endif%}
+      
+                    {% for cat in categories %}
+                    <option value="{{ cat }}">{{ cat }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+      
+              <button type="submit" class="btn btn-primary">Search</button>
+            </form>
+<div class="container py-5">
+
+    <!-- For demo purpose -->
+    <div class="row text-center text-white mb-5">
+        <div class="col-lg-8 mx-auto">
+            <h1 class="display-4">Dan's News Scraper</h1>
+            <p class="lead mb-0">My news scraper to get a constant stream of news from various sources. </p>
+            </div>
+        </div><!-- End -->
+
+        <div class="row">
+            <div class="col-lg-7 mx-auto">
+                
+                <!-- Timeline -->
+                <ul class="timeline">
+                    {% for row in rows %}
+                    <li class="timeline-item bg-white rounded ml-3 p-4 shadow">
+                        <div class="timeline-arrow"></div>
+                        <h2 class="h5 mb-0">{{ row.headline }}</h2>
+                        <p class="text-small mt-2 font-weight-light">{{ row.author }}</p>
+                        <span class="small text-gray"><i class="fa fa-clock-o mr-1"></i>{{ row.published_date }}</span>
+                        <p class="text-small mt-2 font-weight-light">{{ row.summary }}</p>
+                        <span class="small text-gray"><i class="fa fa-clock-o mr-1"></i>{{ row.base_url }}</span>
+                        <div>
+                            <td><a href='{{ row.article_link }}  ' target="_blank">Go to article</a> </a></td>
+
+                        </div>
+                    </li>
+                    {%endfor%}
+                </ul><!-- End -->
+
+            </div>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+    </div>
 </body>
-</html>
+    {%endblock%}

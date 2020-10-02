@@ -1,39 +1,33 @@
 import psycopg2
 from datetime import datetime
 
-
-def convert(date):
-    if 'T' not in date:
-        return date
-    a = date
-    a = a[0:10] + ' ' + a[11:19] + ' ' + a[19:22] + a[23:]
-    try:
-        date = datetime.strptime(a, "%Y-%m-%d %H:%M:%S %z")
-        c = date - date.utcoffset()
-        date = c.strftime("%Y-%m-%d %n %H:%M:%S")
-    except Exception as e:
-        print(e)
-    return date
-
+from gensim.summarization import summarize
 
 # connect to db
 
 con = psycopg2.connect(
     host='localhost',
-    database="news",
+    database="News",
     user='postgres',
     password='admin',
 )
 # cursor
 cur = con.cursor()
-link = 'https://www.theatlantic.com/'
-cur.execute(f"SELECT id,published_date FROM news_list where base_url='{link}' and  published_date ~ 'T' ")
+cur.execute(f"SELECT id,article_text from news_list where summary ='' ")
 rows = cur.fetchall()
+print(len(rows))
 current_links_list = [r for r in rows]
-print(current_links_list)
 for r in current_links_list:
-    sql_update_query = """Update news_list set published_date = %s where id = %s"""
-    cur.execute(sql_update_query, (convert(r[1]), r[0]))
+    sql_update_query = """Update news_list set summary = %s where id = %s"""
+    article_text = r[1]
+    try:
+        summary_text = summarize(article_text, ratio=0.04, word_count=100)
+    except Exception as e:
+        print(e)
+        summary_text='Cannot summarize article , Click on article link'
+    if summary_text== '':
+        summary_text='Cannot summarize article , Click on article link'
+    cur.execute(sql_update_query, (summary_text, r[0]))
     con.commit()
 
 # print(current_links_list)
