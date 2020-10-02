@@ -62,12 +62,27 @@ li.timeline-item::before {
 * ==========================================
 *
 */
+div.form
+{
+    display: block;
+    text-align: center;
+}
+form {
+    color: #fff!important;
+    margin-left: 25%;
+    margin-right:25%;
+    width: 150%;
+    font-size: 1.75em;
+}
 body {
     background: #E8CBC0;
     background: -webkit-linear-gradient(to right, #E8CBC0, #636FA4);
     background: linear-gradient(to right, #E8CBC0, #636FA4);
     min-height: 100vh;
 }
+.alert {
+    width:13%;
+ }
 
 .text-gray {
     color: #999;

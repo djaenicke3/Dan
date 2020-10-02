@@ -33,10 +33,9 @@ def timeline(request):
     page_obj = paginator.get_page(page_num)
 
     context = {'rows': page_obj, 'date_min': date_min, 'date_max': date_max, 'total_number': total_number,
-               'selected_url': selected_url}
+               'selected_url': selected_url, 'categories': categories}
 
     return render(request, 'first_page/timeline.html', context)
-
 
 
 # Create your views here.
@@ -50,6 +49,8 @@ def home(request):
     date_max = request.GET.get('date_max', '')
     title_or_author = request.GET.get('title_or_author', '')
     page_num = request.GET.get('page', 1)
+    total_number = NewsList.objects.all().count()
+
     if selected_url == '':
         if title_contains == "":
             pass
@@ -73,12 +74,9 @@ def home(request):
     if is_valid_queryparam(title_or_author):
         rows = rows.filter(author__icontains=title_or_author)
     paginator = Paginator(rows, 25)  # Show 25 contacts per page.
-    print(paginator.num_pages)
     categories = NewsList.objects.values_list('base_url', flat=True).distinct()
     categories = list(categories)
     page_obj = paginator.get_page(page_num)
-    total_number=NewsList.objects.all().count()
-
 
     return render(request, 'first_page/articles.html',
                   {'rows': page_obj, 'paginator': paginator, 'page_num': page_num, 'total_number': total_number,

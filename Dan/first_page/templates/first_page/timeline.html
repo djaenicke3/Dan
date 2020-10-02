@@ -8,52 +8,60 @@
 {% block content%}
     {% load static %}
     <link rel="stylesheet" href="{%static 'css/timeline.css'%}">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
 <body>
+    <div class="alert alert-primary" role="alert">
+Total Articles : {{total_number}}      </div>
 
-    <div>
-        Total Articles :  <span> {{ total_number }}</span> 
+    <div class="form">
+
+            <form method="GET" action=".">
+
+
+                    <div class="form-group col-md-2 col-lg-2">
+
+                      <label for="publishDateMin">Publish date minimum</label>
+                      {% if date_min%}
+                      <input type="date" class="form-control" id="publishDateMin" name="date_min" value="{{date_min}}">
+                      {%else%}
+                      <input type="date" class="form-control" id="publishDateMin" name="date_min" >
+                      {%endif%}
+                    </div>
+                    <div class="form-group col-md-2 col-lg-2">
+                      <label for="publishDateMax">Publish date maximum</label>
+                      {%if date_max%}
+                      <input type="date" class="form-control" id="publishDateMax" name="date_max" value={{date_max}}>
+
+                      {%else%}
+                      <input type="date" class="form-control" id="publishDateMax" name="date_max">
+                      {%endif%}
+                    </div>
+                    <div class="form-group col-md-4">
+                      <label for="category">Category</label>
+                      <select id="category" class="form-control" name="url">
+                          <option  value="" >--- All urls ---</option>
+
+                          {%if url%}
+                        <option  selected >{{url}}</option>
+                        {%endif%}
+
+                        {% for cat in categories %}
+                        <option value="{{ cat }}">{{ cat }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col text-center">
+
+                  <button type="submit" class="btn btn-primary">Search</button>
+                  </div>
+                </form>
+
     </div>
-        <form method="GET" action=".">
 
-      
-                <div class="form-group col-md-2 col-lg-2">
-      
-                  <label for="publishDateMin">Publish date minimum</label>
-                  {% if date_min%}
-                  <input type="date" class="form-control" id="publishDateMin" name="date_min" value="{{date_min}}">
-                  {%else%}
-                  <input type="date" class="form-control" id="publishDateMin" name="date_min" >
-                  {%endif%}
-                </div>
-                <div class="form-group col-md-2 col-lg-2">
-                  <label for="publishDateMax">Publish date maximum</label>
-                  {%if date_max%}
-                  <input type="date" class="form-control" id="publishDateMax" name="date_max" value={{date_max}}>
-      
-                  {%else%}
-                  <input type="date" class="form-control" id="publishDateMax" name="date_max">
-                  {%endif%}
-                </div>
-                <div class="form-group col-md-4">
-                  <label for="category">Category</label>
-                  <select id="category" class="form-control" name="url">
-                      <option  value="" >--- All urls ---</option>
-      
-                      {%if url%}
-                    <option  selected >{{url}}</option>
-                    {%endif%}
-      
-                    {% for cat in categories %}
-                    <option value="{{ cat }}">{{ cat }}</option>
-                    {% endfor %}
-                  </select>
-                </div>
-              </div>
-      
-              <button type="submit" class="btn btn-primary">Search</button>
-            </form>
 <div class="container py-5">
 
     <!-- For demo purpose -->
