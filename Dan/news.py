@@ -113,7 +113,7 @@ for urls in rssurls:
                 'article_link': post.link,
                 'author': post.get('author','Author not found'),
                 'published_date':date,
-                'article_text': article_text
+                'article_text': article_text,
                  'summary':summary
             }})
 
