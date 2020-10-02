@@ -15,6 +15,7 @@ def timeline(request):
     date_min = request.GET.get('date_min', '')
     date_max = request.GET.get('date_max', '')
     selected_url = request.GET.get("url", '')
+    page_num = request.GET.get('page', 1)
 
     total_number = NewsList.objects.all().count()
 
@@ -28,25 +29,14 @@ def timeline(request):
     categories = list(categories)
 
     rows = rows.order_by('-published_date')
+    paginator = Paginator(rows, 25)  # Show 25 contacts per page.
+    page_obj = paginator.get_page(page_num)
 
-    context = {'rows': rows, 'date_min': date_min, 'date_max': date_max, 'total_number': total_number,
+    context = {'rows': page_obj, 'date_min': date_min, 'date_max': date_max, 'total_number': total_number,
                'selected_url': selected_url}
 
-    return render(request, 'first_page/timeline.html', context)
+    return render(request, 'first_page/articles.html', context)
 
-
-def signin(request):
-    if request.method == 'POST':
-        print(request.POST)
-        username = request.POST.get('name')
-        email = request.POST.get('email')
-        password = request.POST.get('pass')
-        user = User.objects.create_user(username, email, password)
-        user.save()
-
-        return redirect('login')
-    else:
-        return render(request, 'first_page/signin.html')
 
 
 # Create your views here.
