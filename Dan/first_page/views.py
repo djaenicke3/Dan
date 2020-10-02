@@ -11,13 +11,16 @@ def is_valid_queryparam(param):
 
 
 def timeline(request):
-    rows = NewsList.objects.all()
     date_min = request.GET.get('date_min', '')
     date_max = request.GET.get('date_max', '')
     selected_url = request.GET.get("url", '')
     page_num = request.GET.get('page', 1)
 
     total_number = NewsList.objects.all().count()
+    if selected_url == '':
+        rows = NewsList.objects.all()
+    else:
+        rows = NewsList.objects.filter(base_url=selected_url)
 
     if is_valid_queryparam(date_min):
         rows = rows.filter(published_date__gte=date_min)
@@ -33,7 +36,7 @@ def timeline(request):
     page_obj = paginator.get_page(page_num)
 
     context = {'rows': page_obj, 'date_min': date_min, 'date_max': date_max, 'total_number': total_number,
-               'selected_url': selected_url, 'categories': categories}
+               'selected_url': selected_url, 'categories': categories, 'url': selected_url}
 
     return render(request, 'first_page/timeline.html', context)
 
