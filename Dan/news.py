@@ -103,7 +103,7 @@ for urls in rssurls:
                 a=date
                 a = a[0:10] + ' ' + a[11:19] + ' ' + a[19:22] + a[23:]
                 try:
-                    date = datetime.strptime(a, "%Y-%m-%d %H:%M:%S %Z")
+                    date = datetime.strptime(a, "%Y-%m-%d %H:%M:%S %z")
                     c = date - date.utcoffset()
                     date=c.strftime("%Y-%m-%d %n %H:%M:%S")
                 except:
