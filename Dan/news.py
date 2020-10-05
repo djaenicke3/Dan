@@ -69,8 +69,8 @@ for urls in rssurls:
             try:
                 summary=summarize(article_text,word_count=100)
             except:
-                n=article_text.find('.')
-                summary=summarize(article_text[n+1:])
+
+                summary=article_text
 
 
         if post.published[0].isalpha():
