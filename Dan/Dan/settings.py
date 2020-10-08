@@ -26,7 +26,7 @@ SECRET_KEY = '1dn5-7kntv8#p%yrs$9@adb2u0%uv9#g#*v#o98&wcaijn*r34'
 DEBUG = True
 
 
-ALLOWED_HOSTS = ['danieljaenicke.com','167.99.226.189']
+ALLOWED_HOSTS = ['danieljaenicke.com','167.99.226.189', '127.0.0.1']
 
 
 # Application definition
