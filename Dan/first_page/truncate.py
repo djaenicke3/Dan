@@ -18,7 +18,7 @@ for row in rows:
     sql_update_query = """Update news_list set summary = %s where id = %s"""
     if row[1]:
         shorten = row[1][:50]
-        cur.execute(sql_update_query, (row[0], shorten))
+        cur.execute(sql_update_query, (shorten, row[0]))
         print(shorten)
     else:
         pass

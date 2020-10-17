@@ -64,10 +64,10 @@ for urls in rssurls:
         article_text = ' '.join([url.text for url in article])
         try:
 
-            summary=summarize(article_text,ratio=0.04,word_count=100)
+            summary=summarize(article_text,ratio=0.04,word_count=50)
         except:
             try:
-                summary=summarize(article_text,word_count=100)
+                summary=summarize(article_text,word_count=50)
             except:
 
                 summary=article_text
@@ -111,9 +111,6 @@ for urls in rssurls:
 
 
 
-
-
-
         rss_dict.update(
                 {post.link:
                 {'base_url': d.feed.link,
@@ -134,8 +131,6 @@ for post in d:
     cur.execute("insert into news_list (base_url,headline,article_link,author,published_date,article_text,summary) values (%s,%s,%s,%s,%s,%s,%s)",(post.get('base_url'),post.get('headline'),post.get('article_link'),post.get('author'),post.get('published_date'),post.get('article_text'),post.get('summary')))
     con.commit()
     count+=1
-
-
 
 
 
